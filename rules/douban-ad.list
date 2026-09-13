@@ -1,0 +1,16 @@
+DOMAIN,qnmob3.doubanio.com,REJECT
+DOMAIN,xlog.jd.com,REJECT
+DOMAIN,webcast-open.douyin.com,REJECT
+DOMAIN,mssdk.volces.com,REJECT
+DOMAIN,qzs.gdtimg.com,REJECT
+DOMAIN,api.douban.com,REJECT
+DOMAIN,et.tanx.com,REJECT
+DOMAIN,sdk-config.tanx.com,REJECT
+DOMAIN,mazu.m.qq.com,REJECT
+DOMAIN,dsp-x.jd.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao1.com,REJECT
+DOMAIN,sdk.e.qq.com,REJECT
+DOMAIN,ulogs.umeng.com,REJECT
+DOMAIN,mi.gdt.qq.com,REJECT
+DOMAIN,dsp-x.jd.com,REJECT
+DOMAIN,mon.zijieapi.com,REJECT

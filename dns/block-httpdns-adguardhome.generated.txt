@@ -1,0 +1,28 @@
+! Title: BM7 BlockHTTPDNS for AdGuard Home
+! Source: BlackMatrix7 ios_rule_script / BlockHttpDNS
+! Upstream: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BlockHttpDNS/BlockHttpDNS.list
+! Generated automatically by GitHub Actions.
+! Note: ||domain^ blocks the domain and its subdomains.
+
+||dns.jd.com^
+||dns.weibo.cn^
+||dns.weixin.qq.com.cn^
+||dns.weixin.qq.com^
+||httpdns-api.aliyuncs.com^
+||httpdns-sc.aliyuncs.com^
+||httpdns.alicdn.com^
+||httpdns.baidu.com^
+||httpdns.baidubce.com^
+||httpdns.bilivideo.com^
+||httpdns.c.cdnhwc2.com^
+||httpdns.calorietech.com^
+||httpdns.meituan.com^
+||httpdns.music.163.com^
+||httpdns.n.netease.com^
+||httpdns.pro^
+||httpdns.push.oppomobile.com^
+||httpdns.volcengineapi.com^
+||httpdns.yunxindns.com^
+||httpsdns.baidu.com^
+||lofter.httpdns.c.163.com^
+||music.httpdns.c.163.com^

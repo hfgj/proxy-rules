@@ -1,0 +1,86 @@
+# Apple Music
+DOMAIN,aod.itunes.apple.com
+DOMAIN,music.apple.cn
+DOMAIN,music.apple.com
+
+#
+DOMAIN-SUFFIX,ipsw.me
+DOMAIN-SUFFIX,libreoffice.org
+DOMAIN-SUFFIX,codecguide.com
+DOMAIN-SUFFIX,calibre-ebook.com
+DOMAIN-SUFFIX,flaticon.com
+DOMAIN-SUFFIX,fastly.jsdelivr.net
+DOMAIN-SUFFIX,vsean.net
+DOMAIN-SUFFIX,api.mac-stats.com
+DOMAIN-SUFFIX,testingcf.jsdelivr.net
+
+# Process
+PROCESS-NAME,wemeetapp.exe
+PROCESS-NAME,SunloginClient.exe
+PROCESS-NAME,sunlogin_guard.exe
+PROCESS-NAME,DingTalk.exe
+
+# ==========================================
+# 微软中国大陆直连规则集 (Rule-Set 格式)
+# ==========================================
+
+# --- 必应国内版网页 (防止国内搜索降速) ---
+DOMAIN,cn.bing.com
+
+# --- Windows 系统、更新与激活  ---
+DOMAIN-SUFFIX,microsoft.com
+DOMAIN-SUFFIX,windows.com
+DOMAIN-SUFFIX,windows.net
+DOMAIN-SUFFIX,windowsupdate.com
+DOMAIN-SUFFIX,microsoftupdate.com
+DOMAIN-SUFFIX,download.windowsupdate.com
+DOMAIN-SUFFIX,au.download.windowsupdate.com
+
+# --- 微软应用商店与推送分发  ---
+DOMAIN-SUFFIX,onestore.ms
+DOMAIN-SUFFIX,mp.microsoft.com
+DOMAIN-SUFFIX,storeedge.microsoft.com
+DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com
+DOMAIN-SUFFIX,do.dsp.mp.microsoft.com
+DOMAIN-SUFFIX,emdl.ws.microsoft.com
+DOMAIN-SUFFIX,ts.delivery.mp.microsoft.com
+
+# --- Xbox 游戏生态  ---
+DOMAIN-KEYWORD,xbox
+DOMAIN-SUFFIX,xbox.com
+DOMAIN-SUFFIX,xboxlive.com
+DOMAIN-SUFFIX,xboxservices.com
+DOMAIN-SUFFIX,gamepass.com
+DOMAIN-SUFFIX,assets1.xboxlive.com
+DOMAIN-SUFFIX,assets2.xboxlive.com
+
+# --- Office 办公、OneNote 与 Teams ---
+DOMAIN-SUFFIX,office.com
+DOMAIN-SUFFIX,office.net
+DOMAIN-SUFFIX,office365.com
+DOMAIN-SUFFIX,onenote.com
+DOMAIN-SUFFIX,onenote.net
+DOMAIN-SUFFIX,sharepoint.com
+DOMAIN-SUFFIX,teams.microsoft.com
+
+# --- 微软基础认证、账号与 CDN 静态资源 ---
+DOMAIN-SUFFIX,account.microsoft.com
+DOMAIN-SUFFIX,microsoftonline.com
+DOMAIN-SUFFIX,msftauth.net
+DOMAIN-SUFFIX,msauth.net
+DOMAIN-SUFFIX,aspnetcdn.com
+DOMAIN-SUFFIX,azureedge.net
+DOMAIN-SUFFIX,sfx.ms
+DOMAIN-SUFFIX,gfx.ms
+DOMAIN-SUFFIX,msn.com
+
+# --- 微软邮局服务 ---
+DOMAIN-SUFFIX,live.cn
+DOMAIN-SUFFIX,hotmail.com
+DOMAIN-SUFFIX,outlook.com
+
+# --- 微软常用直连 IP 网段 (可选，建议保留以加速连通) ---
+IP-CIDR,23.96.0.0/13,no-resolve
+IP-CIDR,40.74.0.0/15,no-resolve
+IP-CIDR,40.125.0.0/17,no-resolve
+IP-CIDR,207.46.0.0/16,no-resolve

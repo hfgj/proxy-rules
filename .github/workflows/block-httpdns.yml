@@ -1,0 +1,35 @@
+name: block-httpdns
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *" # UTC, Beijing 11:17
+
+permissions:
+  contents: write
+
+concurrency:
+  group: block-httpdns
+  cancel-in-progress: true
+
+jobs:
+  block-httpdns:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Generate block-httpdns outputs
+        run: python tools/block-httpdns/generate.py
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A dns/ rewrites/ firewall/ tools/block-httpdns/
+          if git diff --cached --quiet; then
+            echo "No upstream changes."
+          else
+            git commit -m "chore: update block-httpdns"
+            git push
+          fi

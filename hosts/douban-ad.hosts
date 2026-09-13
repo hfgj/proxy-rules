@@ -1,0 +1,32 @@
+## 豆瓣广告域名收集
+127.0.0.1 qnmob3.doubanio.com
+127.0.0.1 xlog.jd.com
+127.0.0.1 webcast-open.douyin.com
+127.0.0.1 mssdk.volces.com
+127.0.0.1 qzs.gdtimg.com
+127.0.0.1 api.douban.com
+127.0.0.1 et.tanx.com
+127.0.0.1 sdk-config.tanx.com
+127.0.0.1 mazu.m.qq.com
+127.0.0.1 dsp-x.jd.com
+127.0.0.1 api-access.pangolin-sdk-toutiao1.com
+127.0.0.1 sdk.e.qq.com
+127.0.0.1 ulogs.umeng.com
+127.0.0.1 mi.gdt.qq.com
+127.0.0.1 dsp-x.jd.com
+127.0.0.1 mon.zijieapi.com
+
+# ## 豆瓣广告 api
+# https://api.douban.com/v2/app_ads/
+# https://v2.gdt.qq.com/gdt_stats.fcg
+# https://frodo.douban.com/api/v2/erebor/free_ad
+# https://dsp-x.jd.com/adx/sdk
+# https://janapi.jd.com/ansdk/v1/initData
+# https://xlog.jd.com/v1/an
+# https://opehs.tanx.com/japi
+# https://api-access.pangolin-sdk-toutiao1.com/api/ad
+# https://et.tanx.com/tsc
+# https://sdk.e.qq.com
+# https://mapi.m.jd.com
+# https://kepler.jd.com/console
+# https://api-access.pangolin-sdk-toutiao1.com

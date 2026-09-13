@@ -1,0 +1,27 @@
+# NBC
+## 主站、播放服务和授权验证服务器
+DOMAIN-SUFFIX,nbc.com
+DOMAIN-SUFFIX,nbc.co
+DOMAIN-SUFFIX,peacocktv.com
+DOMAIN-SUFFIX,nbcuni.com
+DOMAIN-SUFFIX,nbc.co
+DOMAIN,vod-lf-oneapp2-prd.akamaized.net
+
+## 广告和验证相关
+DOMAIN-SUFFIX,theplatform.com
+DOMAIN-SUFFIX,fwmrm.net
+DOMAIN-SUFFIX,s.yimg.com
+
+## CDN 和媒体资源
+DOMAIN,nbcuni-vod.akamaized.net
+DOMAIN,nbcuni-vh.akamaihd.net
+DOMAIN,nbc-ll.aiv-cdn.net
+DOMAIN,edgesuite.net
+DOMAIN,llnwd.net
+DOMAIN,cloudfront.net
+
+# Tubi
+DOMAIN-SUFFIX,tubi.tv
+DOMAIN-SUFFIX,tubi.io
+DOMAIN-SUFFIX,tubi.video
+DOMAIN-SUFFIX,tubitv.com

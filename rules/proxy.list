@@ -1,0 +1,41 @@
+# fix
+DOMAIN,dl.google.com
+DOMAIN,recaptcha.google.cn
+# DOMAIN-SUFFIX,googletraveladservices.com
+# DOAMIN-SUFFIX,gstatic.com
+
+# Apple Music 个人上传音乐
+DOMAIN-SUFFIX,blobstore.apple.com
+DOMAIN-KEYWORD,blobstore-apple.com
+# DOMAIN,amazonaws.com
+
+# imdb
+# DOMAIN-SUFFIX,imdb.com
+# DOMAIN-SUFFIX,imdb.to
+# DOMAIN-SUFFIX,media-imdb.com
+# DOMAIN-SUFFIX,api.imdbws.com
+
+# 公共代理/技术服务
+DOMAIN-SUFFIX,vultr.com
+DOMAIN-SUFFIX,metacubex.one
+
+# 其他
+DOMAIN-SUFFIX,stackoverflow.com
+DOMAIN-SUFFIX,unlock-music.dev
+DOMAIN-SUFFIX,themoviedb.org
+DOMAIN-SUFFIX,discogs.com
+DOMAIN-SUFFIX,wlyxmusic.net
+DOMAIN-SUFFIX,blu-ray.com
+DOMAIN-SUFFIX,shazam.com
+DOMAIN-SUFFIX,brew.sh
+DOMAIN-SUFFIX,qnap.com
+DOMAIN-SUFFIX,firecore.com
+DOMAIN-SUFFIX,termius.com
+DOMAIN-SUFFIX,ghcr.io
+DOMAIN-SUFFIX,ahcdn.com
+DOMAIN-SUFFIX,kjcpromo.com
+DOMAIN-SUFFIX,broadcom.com
+DOMAIN-SUFFIX,timochan.cn
+DOMAIN-SUFFIX,howtogeek.com
+DOMAIN-SUFFIX,open-isle.com
+DOMAIN-SUFFIX,turbojetbooking.com
