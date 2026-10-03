@@ -4,7 +4,6 @@ DOMAIN-SUFFIX,nbc.com
 DOMAIN-SUFFIX,nbc.co
 DOMAIN-SUFFIX,peacocktv.com
 DOMAIN-SUFFIX,nbcuni.com
-DOMAIN-SUFFIX,nbc.co
 DOMAIN,vod-lf-oneapp2-prd.akamaized.net
 
 ## 广告和验证相关
@@ -16,9 +15,9 @@ DOMAIN-SUFFIX,s.yimg.com
 DOMAIN,nbcuni-vod.akamaized.net
 DOMAIN,nbcuni-vh.akamaihd.net
 DOMAIN,nbc-ll.aiv-cdn.net
-DOMAIN,edgesuite.net
-DOMAIN,llnwd.net
-DOMAIN,cloudfront.net
+# DOMAIN,edgesuite.net
+# DOMAIN,llnwd.net
+# DOMAIN,cloudfront.net
 
 # Tubi
 DOMAIN-SUFFIX,tubi.tv
