@@ -2,10 +2,13 @@
 DOMAIN,dl.google.com
 DOMAIN,recaptcha.google.cn
 # DOMAIN-SUFFIX,googletraveladservices.com
-# DOAMIN-SUFFIX,gstatic.com
+# DOMAIN-SUFFIX,gstatic.com
 
 # Apple Music 个人上传音乐
 DOMAIN-SUFFIX,blobstore.apple.com
+# 已观测到的 CDN 别名后缀；与下面的关键词兜底使用相同代理策略。
+DOMAIN-SUFFIX,blobstore-apple.com.akadns.net
+# 保留关键词，兼容仍含此标识的其他别名；不能覆盖标识本身改变的情况。
 DOMAIN-KEYWORD,blobstore-apple.com
 # DOMAIN,amazonaws.com
 

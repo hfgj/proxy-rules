@@ -9,6 +9,7 @@ DOMAIN,apple-relay.akamaized.net
 DOMAIN,apple-carry-relay.cloudflare.com
 DOMAIN,mask-api.icloud.com
 DOMAIN,mask-api.fe2.apple-dns.net
+# 与 Apple News 共用；当前规则顺序由 AppleIntelligence 优先处理。
 DOMAIN,gspe1-ssl.ls.apple.com
 DOMAIN,gateway.icloud.com
 DOMAIN,apps.mzstatic.com
