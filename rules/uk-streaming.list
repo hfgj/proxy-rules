@@ -1,2 +1,31 @@
 # stream
 DOMAIN-SUFFIX,u.co.uk
+
+# BBC iPlayer
+## 主站、API 和账号
+DOMAIN-SUFFIX,bbc.co.uk
+DOMAIN-SUFFIX,bbci.co.uk
+DOMAIN,account.bbc.com
+DOMAIN,session.bbc.com
+
+## Media Selector / Live fallback
+DOMAIN,matchmaker.live.bidi.net.uk
+
+## BBC Akamai CDN
+DOMAIN,aod-dash-uk-live.akamaized.net
+DOMAIN,aod-hls-uk-live.akamaized.net
+DOMAIN,as-dash-uk-live.akamaized.net
+DOMAIN,as-hls-uk-live.akamaized.net
+DOMAIN,vod-dash-uk-live.akamaized.net
+DOMAIN,vod-dash-ww-live.akamaized.net
+DOMAIN,vod-hls-uk-live.akamaized.net
+DOMAIN,vod-sub-uk-live.akamaized.net
+DOMAIN,vod-thumb-uk-live.akamaized.net
+DOMAIN,vod-thumb-ww-live.akamaized.net
+DOMAIN,vs-cmaf-push-uk-live.akamaized.net
+DOMAIN,vs-hls-push-uk-live.akamaized.net
+
+## BBC 媒体资源 / 兼容 CDN
+DOMAIN-SUFFIX,bbcmedia.co.uk
+DOMAIN-SUFFIX,bbcfmt.hs.llnwd.net
+DOMAIN-SUFFIX,bbcfmt.s.llnwi.net
