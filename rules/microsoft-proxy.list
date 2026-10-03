@@ -1,0 +1,5 @@
+# 已确认的独立 Microsoft Copilot 入口
+# 这是域名分流建议；不保证所有嵌入式 Copilot 功能或账号地区检查均由这些域名覆盖。
+DOMAIN-SUFFIX,copilot.microsoft.com
+DOMAIN-SUFFIX,copilot.com
+DOMAIN-SUFFIX,copilot.ai
