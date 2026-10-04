@@ -14,6 +14,11 @@ DOMAIN-SUFFIX,vsean.net
 DOMAIN-SUFFIX,api.mac-stats.com
 DOMAIN-SUFFIX,testingcf.jsdelivr.net
 
+# Debrid-Link
+DOMAIN-SUFFIX,debrid-link.com
+DOMAIN-SUFFIX,debrid-link.fr
+DOMAIN-SUFFIX,debrid.link
+
 # Tailscale
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,tailscale.io
