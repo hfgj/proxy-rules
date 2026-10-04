@@ -18,6 +18,7 @@ DOMAIN-SUFFIX,testingcf.jsdelivr.net
 DOMAIN-SUFFIX,debrid-link.com
 DOMAIN-SUFFIX,debrid-link.fr
 DOMAIN-SUFFIX,debrid.link
+DOMAIN,dl11.deblk.cloud
 
 # Tailscale
 DOMAIN-SUFFIX,tailscale.com
