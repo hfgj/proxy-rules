@@ -1,5 +1,5 @@
 /** 
-☑️ HFGJ 资源解析器 v1.2 | 上游 ©𝐒𝐡𝐚𝐰𝐧  ⟦2026-09-18 14:27⟧
+☑️ HFGJ 资源解析器 v1.3 | 上游 ©𝐒𝐡𝐚𝐰𝐧  ⟦2026-09-18 14:27⟧
 ----------------------------------------------------------
 🛠 发现 𝐁𝐔𝐆 请反馈: https://t.me/ShawnKOP_Parser_Bot
 ⛳️ 关注 🆃🅶 相关频道: https://t.me/QuanX_API
@@ -513,7 +513,7 @@ $parser.uiToHash = function (values) {
 
 
 //
-// HFGJ alias adapter v1.2. Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
+// HFGJ alias adapter v1.3. Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
 /* HFGJ alias adapter. Pure parsing only: no network, DNS lookup, or storage. */
 var HFGJAlias = (function () {
   "use strict";
@@ -571,8 +571,32 @@ var HFGJAlias = (function () {
     context.aliases.forEach(function (_, source) { resolve(context, source); });
     if (context.aliases.size && /(?:^|[&#])(?:profile|relay)=/.test(context.link)) throw failure("E_ALIAS_MODE");
   }
+  function inputFormat(content) {
+    var text = String(content || "");
+    if (/^\s*\[server_local\]/mi.test(text)) return "QX 配置";
+    if (/^\s*\[Proxy\]/mi.test(text)) return "Surge 配置";
+    if (/^\s*proxies\s*:/m.test(text) || /"proxies"\s*:/.test(text)) return "Clash 配置";
+    if (/^\s*(?:shadowsocks|trojan|anytls|vmess|vless|http|socks5)\s*=/mi.test(text)) return "QX 节点列表";
+    if (/^\s*(?:ss|ssr|vmess|vless|trojan|anytls):\/\//mi.test(text)) return "URI 节点列表";
+    if (/^\s*\[server_remote\]/mi.test(text)) return "QX 远程引用配置";
+    if (text.trim() && /^[A-Za-z0-9+/=\s]+$/.test(text)) return "Base64 或其他编码";
+    return "其他格式";
+  }
+  function diagnostic(context, payload) {
+    if (!context.diagnosticEnabled) return null;
+    var ok = payload && typeof payload.content === "string" && !payload.error && !payload.retry;
+    return "输入格式：" + context.inputFormat +
+      "\n读到的映射：" + context.aliases.size +
+      "\n命中的节点：" + (ok ? context.matchedNodes : 0) +
+      "\n替换的节点：" + (ok ? context.replacedNodes : 0) +
+      "\n结果：" + (payload && payload.retry ? "重试" : ok ? "成功" : "失败");
+  }
   function prepare(resource) {
-    var context = { aliases: new Map(), link: resource.link || "", error: null, failed: null };
+    var link = resource.link || "";
+    var fragment = String(link).split("#").slice(1).join("#");
+    var context = { aliases: new Map(), link: link, error: null, failed: null,
+      inputFormat: inputFormat(resource.content), matchedNodes: 0, replacedNodes: 0,
+      diagnosticEnabled: resource.type === "server" && /(?:^|&)hfgjdiag=1(?:&|$)/.test(fragment) };
     if (resource.type !== "server") return context;
     try {
       var section = "", nodes = 0, remote = 0;
@@ -694,9 +718,13 @@ var HFGJAlias = (function () {
       var inserted = ", " + additions.join(", ");
       rest = tagAt < 0 ? rest + inserted : rest.slice(0, tagAt) + inserted + rest.slice(tagAt);
     }
+    context.matchedNodes++;
+    if (target !== original) context.replacedNodes++;
     return m[1] + m[2] + m[3] + target + ":" + endpoint[2] + rest;
   }
   function transform(context, content) {
+    context.matchedNodes = 0;
+    context.replacedNodes = 0;
     if (!context.aliases.size) return content;
     if (typeof content !== "string" || !content.trim()) throw failure("E_NODE_FORMAT");
     var nodeCount = 0;
@@ -708,7 +736,7 @@ var HFGJAlias = (function () {
     if (!nodeCount) throw failure("E_NODE_FORMAT");
     return result;
   }
-  return { prepare: prepare, acceptClash: acceptClash, protectClashNode: protectClashNode, isAliasedNode: isAliasedNode, transform: transform, resolve: resolve, failure: failure, quietLog: function () {} };
+  return { diagnostic: diagnostic, prepare: prepare, acceptClash: acceptClash, protectClashNode: protectClashNode, isAliasedNode: isAliasedNode, transform: transform, resolve: resolve, failure: failure, quietLog: function () {} };
 })();
 if (typeof module !== "undefined" && module.exports) module.exports = HFGJAlias;
 
@@ -5901,5 +5929,10 @@ function NOT(array) {
       hfgjFinalPayload = {error: HFGJAlias.failure('E_NODE_FORMAT').message};
     }
   }
+}
+if (hfgjAliasContext.diagnosticEnabled) {
+  try {
+    $notify("HFGJ v1.3 诊断", "", HFGJAlias.diagnostic(hfgjAliasContext, hfgjFinalPayload));
+  } catch (hfgjDiagnosticError) { /* Diagnostics must not affect node delivery. */ }
 }
 $done(hfgjFinalPayload);

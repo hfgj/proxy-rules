@@ -247,7 +247,7 @@ for (const withAlias of [false, true]) {
   });
 }
 test("leading upstream documentation and top-level helper are retained", () => {
-  assert(generated.startsWith(original.slice(0,original.indexOf("let version = typeof $environment")).replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.2 | 上游 ©")));
+  assert(generated.startsWith(original.slice(0,original.indexOf("let version = typeof $environment")).replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.3 | 上游 ©")));
 });
 for (const input of [
   resource(profile("shadowsocks=a.example:443, method=aes-128-gcm, password=test, tag=one")),
@@ -264,6 +264,42 @@ for (const input of [
     assert.deepEqual(JSON.parse(JSON.stringify(r.evaluationResult)),r.outputs[0]);
   });
 }
+test("diagnostics are off by default", () => {
+  const r=run(generated,resource(profile("trojan=a.example:443, password=test, tag=one")));
+  assert(!r.notifications.some(x=>x[0]==="HFGJ v1.3 诊断"));
+});
+test("diagnostics report counts and never private fields", () => {
+  const node="trojan=a.example:443, password=private-password, tls-host=identity.example, tag=private-tag";
+  const r=run(generated,resource(profile(node),"server","#hfgjdiag=1"));
+  const n=r.notifications.filter(x=>x[0]==="HFGJ v1.3 诊断");assert.equal(n.length,1);
+  const text=JSON.stringify(n);assert.match(text,/QX 配置/);assert.match(text,/读到的映射：1/);assert.match(text,/命中的节点：1/);assert.match(text,/替换的节点：1/);
+  for(const value of ["a.example","b.example","identity.example","private-password","private-tag","subscription.example"]) assert(!text.includes(value));
+  assert.equal(r.outputs.length,1);assert.deepEqual(JSON.parse(JSON.stringify(r.evaluationResult)),r.outputs[0]);
+});
+test("node-only diagnostics reveal missing mapping without changing output", () => {
+  const input=resource("anytls=a.example:443, password=test, tag=one","server","#hfgjdiag=1");
+  const r=run(generated,input);const n=r.notifications.find(x=>x[0]==="HFGJ v1.3 诊断");
+  assert.match(n[2],/QX 节点列表/);assert.match(n[2],/读到的映射：0/);assert.match(n[2],/替换的节点：0/);
+  assert.deepEqual(r.outputs,[run(original,input).outputs.at(-1)]);
+});
+test("diagnostics retain enabled Clash mapping counts", () => {
+  const r=run(generated,resource(clash,"server","#hfgjdiag=1"));
+  const n=r.notifications.find(x=>x[0]==="HFGJ v1.3 诊断");assert.match(n[2],/Clash 配置/);assert.match(n[2],/读到的映射：1/);assert.match(n[2],/替换的节点：1/);
+});
+test("diagnostic notification failure cannot break node delivery", () => {
+  const context={$resource:resource(profile("trojan=a.example:443, password=test, tag=one"),"server","#hfgjdiag=1"),$environment:{version:"Quantumult X build 950"},$done:x=>x,$notify:()=>{throw new Error("notifications unavailable")},console:{log:()=>{}}};
+  const result=vm.runInNewContext(generated,context,{timeout:10000});assert(result.content);assert(!result.error);
+});
+test("diagnostic failure reports zero delivered replacements", () => {
+  const r=run(generated,resource(profile("trojan=a.example:443, password=test, tag=one","alias=/a.example/a.example"),"server","#hfgjdiag=1"));
+  const n=r.notifications.find(x=>x[0]==="HFGJ v1.3 诊断");assert.match(n[2],/结果：失败/);assert.match(n[2],/替换的节点：0/);
+});
+test("diagnostic switch accepts fragment only and exact opt-in", () => {
+  for(const link of ["https://subscription.example/?hfgjdiag=1","https://subscription.example/#hfgjdiag=10","https://subscription.example/#nohfgjdiag=1"]){
+    assert.equal(adapter.prepare({...resource(""),link}).diagnosticEnabled,false);
+  }
+  assert.equal(adapter.prepare(resource("","server","#in=HK&hfgjdiag=1")).diagnosticEnabled,true);
+});
 // Opt-in private samples: never print assertion operands, notifications, or logs.
 if (process.env.HFGJ_PRIVATE_SAMPLES_ROOT) {
   const privateRoot=path.resolve(process.env.HFGJ_PRIVATE_SAMPLES_ROOT);

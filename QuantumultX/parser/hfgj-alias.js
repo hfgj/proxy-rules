@@ -55,8 +55,32 @@ var HFGJAlias = (function () {
     context.aliases.forEach(function (_, source) { resolve(context, source); });
     if (context.aliases.size && /(?:^|[&#])(?:profile|relay)=/.test(context.link)) throw failure("E_ALIAS_MODE");
   }
+  function inputFormat(content) {
+    var text = String(content || "");
+    if (/^\s*\[server_local\]/mi.test(text)) return "QX 配置";
+    if (/^\s*\[Proxy\]/mi.test(text)) return "Surge 配置";
+    if (/^\s*proxies\s*:/m.test(text) || /"proxies"\s*:/.test(text)) return "Clash 配置";
+    if (/^\s*(?:shadowsocks|trojan|anytls|vmess|vless|http|socks5)\s*=/mi.test(text)) return "QX 节点列表";
+    if (/^\s*(?:ss|ssr|vmess|vless|trojan|anytls):\/\//mi.test(text)) return "URI 节点列表";
+    if (/^\s*\[server_remote\]/mi.test(text)) return "QX 远程引用配置";
+    if (text.trim() && /^[A-Za-z0-9+/=\s]+$/.test(text)) return "Base64 或其他编码";
+    return "其他格式";
+  }
+  function diagnostic(context, payload) {
+    if (!context.diagnosticEnabled) return null;
+    var ok = payload && typeof payload.content === "string" && !payload.error && !payload.retry;
+    return "输入格式：" + context.inputFormat +
+      "\n读到的映射：" + context.aliases.size +
+      "\n命中的节点：" + (ok ? context.matchedNodes : 0) +
+      "\n替换的节点：" + (ok ? context.replacedNodes : 0) +
+      "\n结果：" + (payload && payload.retry ? "重试" : ok ? "成功" : "失败");
+  }
   function prepare(resource) {
-    var context = { aliases: new Map(), link: resource.link || "", error: null, failed: null };
+    var link = resource.link || "";
+    var fragment = String(link).split("#").slice(1).join("#");
+    var context = { aliases: new Map(), link: link, error: null, failed: null,
+      inputFormat: inputFormat(resource.content), matchedNodes: 0, replacedNodes: 0,
+      diagnosticEnabled: resource.type === "server" && /(?:^|&)hfgjdiag=1(?:&|$)/.test(fragment) };
     if (resource.type !== "server") return context;
     try {
       var section = "", nodes = 0, remote = 0;
@@ -178,9 +202,13 @@ var HFGJAlias = (function () {
       var inserted = ", " + additions.join(", ");
       rest = tagAt < 0 ? rest + inserted : rest.slice(0, tagAt) + inserted + rest.slice(tagAt);
     }
+    context.matchedNodes++;
+    if (target !== original) context.replacedNodes++;
     return m[1] + m[2] + m[3] + target + ":" + endpoint[2] + rest;
   }
   function transform(context, content) {
+    context.matchedNodes = 0;
+    context.replacedNodes = 0;
     if (!context.aliases.size) return content;
     if (typeof content !== "string" || !content.trim()) throw failure("E_NODE_FORMAT");
     var nodeCount = 0;
@@ -192,6 +220,6 @@ var HFGJAlias = (function () {
     if (!nodeCount) throw failure("E_NODE_FORMAT");
     return result;
   }
-  return { prepare: prepare, acceptClash: acceptClash, protectClashNode: protectClashNode, isAliasedNode: isAliasedNode, transform: transform, resolve: resolve, failure: failure, quietLog: function () {} };
+  return { diagnostic: diagnostic, prepare: prepare, acceptClash: acceptClash, protectClashNode: protectClashNode, isAliasedNode: isAliasedNode, transform: transform, resolve: resolve, failure: failure, quietLog: function () {} };
 })();
 if (typeof module !== "undefined" && module.exports) module.exports = HFGJAlias;

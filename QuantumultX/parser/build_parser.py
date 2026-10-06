@@ -80,7 +80,7 @@ def build() -> str:
     # Keep the upstream leading documentation and helper UI at top level.
     helper_end = upstream.index("let version = typeof $environment")
     helper_prefix, upstream = upstream[:helper_end], upstream[helper_end:]
-    helper_prefix = helper_prefix.replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.2 | 上游 ©", 1)
+    helper_prefix = helper_prefix.replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.3 | 上游 ©", 1)
     prelude = """
 var hfgjAliasContext = HFGJAlias.prepare($resource);
 var hfgjPendingResults = [];
@@ -105,9 +105,14 @@ if (hfgjAliasContext.error) {
     }
   }
 }
+if (hfgjAliasContext.diagnosticEnabled) {
+  try {
+    $notify("HFGJ v1.3 诊断", "", HFGJAlias.diagnostic(hfgjAliasContext, hfgjFinalPayload));
+  } catch (hfgjDiagnosticError) { /* Diagnostics must not affect node delivery. */ }
+}
 $done(hfgjFinalPayload);
 """
-    header = "// HFGJ alias adapter v1.2. Upstream commit: " + metadata["commit"] + "\n"
+    header = "// HFGJ alias adapter v1.3. Upstream commit: " + metadata["commit"] + "\n"
     return helper_prefix + header + adapter + prelude + upstream + suffix
 
 
