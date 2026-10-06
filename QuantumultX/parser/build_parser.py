@@ -77,13 +77,17 @@ def build() -> str:
         raise RuntimeError("上游完成回调接入点变化，需重新审查上游")
     upstream = upstream.replace("$done(", "hfgjCaptureDone(")
     adapter = (BASE / "hfgj-alias.js").read_text()
+    # Keep the upstream leading documentation and helper UI at top level.
+    helper_end = upstream.index("let version = typeof $environment")
+    helper_prefix, upstream = upstream[:helper_end], upstream[helper_end:]
+    helper_prefix = helper_prefix.replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.2 | 上游 ©", 1)
     prelude = """
 var hfgjAliasContext = HFGJAlias.prepare($resource);
-var hfgjNativeDone = $done;
 var hfgjPendingResults = [];
+var hfgjFinalPayload;
 function hfgjCaptureDone(payload) { hfgjPendingResults.push(payload); }
 if (hfgjAliasContext.error) {
-  hfgjNativeDone({error: HFGJAlias.failure(hfgjAliasContext.error).message});
+  hfgjFinalPayload = {error: HFGJAlias.failure(hfgjAliasContext.error).message};
 } else {
   try {
 """
@@ -93,19 +97,18 @@ if (hfgjAliasContext.error) {
     hfgjAliasContext.failed = err.hfgjCode || 'E_ALIAS_INTERNAL';
   }
   if (hfgjAliasContext.failed) {
-    hfgjNativeDone({error: HFGJAlias.failure(hfgjAliasContext.failed).message});
-  } else if (hfgjAliasContext.aliases.size) {
-    var hfgjFinalResult = hfgjPendingResults[hfgjPendingResults.length - 1];
-    if (!hfgjFinalResult || (!hfgjFinalResult.retry && !hfgjFinalResult.error && !hfgjFinalResult.content)) {
-      hfgjNativeDone({error: HFGJAlias.failure('E_NODE_FORMAT').message});
-    } else hfgjNativeDone(hfgjFinalResult);
+    hfgjFinalPayload = {error: HFGJAlias.failure(hfgjAliasContext.failed).message};
   } else {
-    hfgjPendingResults.forEach(function (payload) { hfgjNativeDone(payload); });
+    hfgjFinalPayload = hfgjPendingResults[hfgjPendingResults.length - 1];
+    if (!hfgjFinalPayload || (!hfgjFinalPayload.retry && !hfgjFinalPayload.error && typeof hfgjFinalPayload.content !== 'string')) {
+      hfgjFinalPayload = {error: HFGJAlias.failure('E_NODE_FORMAT').message};
+    }
   }
 }
+$done(hfgjFinalPayload);
 """
-    header = "// HFGJ alias adapter v1.1. Upstream commit: " + metadata["commit"] + "\n"
-    return header + adapter + prelude + upstream + suffix
+    header = "// HFGJ alias adapter v1.2. Upstream commit: " + metadata["commit"] + "\n"
+    return helper_prefix + header + adapter + prelude + upstream + suffix
 
 
 if __name__ == "__main__":

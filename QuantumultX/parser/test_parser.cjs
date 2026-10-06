@@ -25,16 +25,16 @@ function run(source, input, build = 950, rejectDoneAssignment = false) {
     $resource: {...input}, $environment: {version: "Quantumult X build " + build},
     $notify: (...args) => notifications.push(args), console: {log: (...args) => logs.push(args)}
   };
-  const nativeDone = output => { outputs.push(JSON.parse(JSON.stringify(output))); };
+  const nativeDone = output => { outputs.push(JSON.parse(JSON.stringify(output))); return output; };
   if (rejectDoneAssignment) Object.defineProperty(context, "$done", {
     get: () => nativeDone,
     set: () => { throw new TypeError("host completion API cannot be reassigned"); },
     configurable: false
   });
   else Object.defineProperty(context, "$done", {value: nativeDone, writable: false, configurable: false});
-  vm.runInNewContext(source, context, {timeout: 10000});
+  const evaluationResult = vm.runInNewContext(source, context, {timeout: 10000});
   assert.equal(context.$done, nativeDone);
-  return {outputs, notifications, logs, context};
+  return {outputs, notifications, logs, context, evaluationResult};
 }
 function output(input) {
   const r = run(generated, input);
@@ -182,15 +182,15 @@ test("confirmed enabled Clash domain hosts use same alias adapter", () => {
 });
 test("disabled Clash hosts preserve upstream behavior", () => {
   const input=resource(clash.replace("use-hosts: true","use-hosts: false"));
-  assert.deepEqual(run(generated,input).outputs,run(original,input).outputs);
+  assert.deepEqual(run(generated,input).outputs,[run(original,input).outputs.at(-1)]);
 });
 test("Clash IP hosts preserve upstream behavior", () => {
   const input=resource(clash.replace("a.example: b.example","a.example: 192.0.2.1"));
-  assert.deepEqual(run(generated,input).outputs,run(original,input).outputs);
+  assert.deepEqual(run(generated,input).outputs,[run(original,input).outputs.at(-1)]);
 });
 test("Clash IP list hosts preserve upstream behavior", () => {
   const input=resource(clash.replace("a.example: b.example","a.example: [192.0.2.1, 192.0.2.2]"));
-  assert.deepEqual(run(generated,input).outputs,run(original,input).outputs);
+  assert.deepEqual(run(generated,input).outputs,[run(original,input).outputs.at(-1)]);
 });
 test("Clash URL host value is not mistaken for IPv6", () => error(resource(clash.replace("a.example: b.example","a.example: https://b.example")),"E_ALIAS_FORMAT"));
 test("Clash JSON hosts follow enabled metadata contract", () => {
@@ -227,7 +227,7 @@ for (const input of [
   resource(clash.replace("hosts:\n  a.example: b.example\ndns:\n  use-hosts: true\n", ""))
 ]) {
   test("no-alias golden compatibility: " + input.type + " " + input.content.split("\n")[0].split("=")[0].slice(0,24), () => {
-    assert.deepEqual(run(generated,input).outputs,run(original,input).outputs);
+    assert.deepEqual(run(generated,input).outputs,[run(original,input).outputs.at(-1)]);
   });
 }
 test("parser helper UI remains exposed", () => {
@@ -243,7 +243,25 @@ for (const withAlias of [false, true]) {
     if (withAlias) {
       assert.equal(r.outputs.length, 1);
       assert.match(Buffer.from(r.outputs[0].content,"base64").toString("utf8"), /^shadowsocks=b.example:/);
-    } else assert.deepEqual(r.outputs,run(original,resource(node),950,true).outputs);
+    } else assert.deepEqual(r.outputs,[run(original,resource(node),950,true).outputs.at(-1)]);
+  });
+}
+test("leading upstream documentation and top-level helper are retained", () => {
+  assert(generated.startsWith(original.slice(0,original.indexOf("let version = typeof $environment")).replace("☑️ 资源解析器 ©", "☑️ HFGJ 资源解析器 v1.2 | 上游 ©")));
+});
+for (const input of [
+  resource(profile("shadowsocks=a.example:443, method=aes-128-gcm, password=test, tag=one")),
+  resource("[Proxy]\none = ss, a.example, 443, encrypt-method=aes-128-gcm, password=test\n[Host]\na.example = b.example"),
+  resource("host-suffix, example.com, direct", "filter"),
+  resource("^https://example\\.com/ad url reject", "rewrite"),
+  resource(profile("trojan=a.example:443, password=test, tag=one", "alias=/a.example/a.example")),
+  resource(profile("trojan=a.example:443, password=test, tag=one"), "server", "#UA=1")
+]) {
+  test("native completion is called once and evaluation returns final payload: " + input.type, () => {
+    const r=run(generated,input);
+    assert.equal(r.outputs.length,1);
+    assert(r.evaluationResult && typeof r.evaluationResult === "object");
+    assert.deepEqual(JSON.parse(JSON.stringify(r.evaluationResult)),r.outputs[0]);
   });
 }
 // Opt-in private samples: never print assertion operands, notifications, or logs.
@@ -306,7 +324,7 @@ if (process.env.HFGJ_PRIVATE_SAMPLES_ROOT) {
       if (/^\[Proxy\]\s*$/m.test(text)) {
         assert.equal(c.error,null);assert.equal(c.aliases.size,0);
         const r=run(generated,resource(text));
-        assert.deepEqual(r.outputs,run(original,resource(text)).outputs);
+        assert.deepEqual(r.outputs,[run(original,resource(text)).outputs.at(-1)]);
         const last=r.outputs.at(-1);assert(last && !last.error && last.content);
         const nodes=Buffer.from(last.content,"base64").toString("utf8").split("\n").filter(Boolean);
         assert.equal(nodes.length,221);assert.equal(r.logs.length,0);
