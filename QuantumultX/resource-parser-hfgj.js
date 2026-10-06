@@ -1,4 +1,4 @@
-// HFGJ alias adapter v1. Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
+// HFGJ alias adapter v1.1. Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
 /* HFGJ alias adapter. Pure parsing only: no network, DNS lookup, or storage. */
 var HFGJAlias = (function () {
   "use strict";
@@ -200,10 +200,10 @@ if (typeof module !== "undefined" && module.exports) module.exports = HFGJAlias;
 var hfgjAliasContext = HFGJAlias.prepare($resource);
 var hfgjNativeDone = $done;
 var hfgjPendingResults = [];
+function hfgjCaptureDone(payload) { hfgjPendingResults.push(payload); }
 if (hfgjAliasContext.error) {
   hfgjNativeDone({error: HFGJAlias.failure(hfgjAliasContext.error).message});
 } else {
-  $done = function (payload) { hfgjPendingResults.push(payload); };
   try {
 /** 
 ☑️ 资源解析器 ©𝐒𝐡𝐚𝐰𝐧  ⟦2026-09-18 14:27⟧
@@ -1010,11 +1010,11 @@ var flag = 1
 // retry with new UA, default use shadowrocket
 if (UARetry && !inRetry && version>920) {
   $notify("⚠️ 将尝试使用其他 UA, 重新获取订阅内容","⚠️ 如仍旧无有效内容，请自行与节点提供商联系","⚠️ 本次尝试使用 User-Agent 为 ⬇️\n\n"+UA_Retry)
-  $done({retry: {user_agent: "Shadowrocket/3218 CFNetwork/3860.600.12 Darwin/25.5.0 iPhone18,1"}})
+  hfgjCaptureDone({retry: {user_agent: "Shadowrocket/3218 CFNetwork/3860.600.12 Darwin/25.5.0 iPhone18,1"}})
 } else {
   if (typeof($resource)!=="undefined" && PProfile == 0) {
   Parser()
-  $done({ content: total, info: Finfo })
+  hfgjCaptureDone({ content: total, info: Finfo })
 } else if (PProfile != 0) {
   try {
     Profile_Handle()
@@ -1026,7 +1026,7 @@ if (UARetry && !inRetry && version>920) {
   openlink = {"open-url": ADDres}
   $notify("⚠️请忽略报错提示, 点击此通知跳转", "添加配置中的有效远程资源👇 ["+ PProfile+"]", ADDres,openlink)
   total = ProfileInfo[typeQ]
-  $done({content:total})
+  hfgjCaptureDone({content:total})
 }
 }
 
@@ -1063,14 +1063,14 @@ function Parser() {
   } else {
     total=""
   }
-    $done({ content: total });
+    hfgjCaptureDone({ content: total });
 }
 
 
 // 2026-05-15 remove
 // if (typeof($resource)!=="undefined" && PProfile == 0) {
 //   Parser()
-//   $done({ content: total, info: Finfo })
+//   hfgjCaptureDone({ content: total, info: Finfo })
 // } else if (PProfile != 0) {
 //   try {
 //     Profile_Handle()
@@ -1082,7 +1082,7 @@ function Parser() {
 //   openlink = {"open-url": ADDres}
 //   $notify("⚠️请忽略报错提示, 点击此通知跳转", "添加配置中的有效远程资源👇 ["+ PProfile+"]", ADDres,openlink)
 //   total = ProfileInfo[typeQ]
-//   $done({content:total})
+//   hfgjCaptureDone({content:total})
 // }
 
 
@@ -1233,9 +1233,9 @@ function ResourceParse() {
       }
       if(Pflow==1) {
         //$notify("添加流量信息","xxx","xxxx")
-        $done({ content: total, info: {bytes_used: 3073741824, bytes_remaining: 2147483648, expire_date: 1854193966}});
+        hfgjCaptureDone({ content: total, info: {bytes_used: 3073741824, bytes_remaining: 2147483648, expire_date: 1854193966}});
       //$notify("done?","strange")
-      } else { $done({ content: total });}
+      } else { hfgjCaptureDone({ content: total });}
     } else { // total length = 0
       if(Perror == 0) {
       if (PNS !=0) { // 全部为不支持类型节点
@@ -1251,14 +1251,14 @@ function ResourceParse() {
     }
       if (hfgjAliasContext.aliases.size) throw HFGJAlias.failure('E_NODE_FORMAT');
       total = errornode
-      $done({ content: errornode })
+      hfgjCaptureDone({ content: errornode })
     }
   } else if (flag == 0){ //空/错误类型
     total = errornode
-    $done({ content: errornode })
+    hfgjCaptureDone({ content: errornode })
   } else if (flag == -1){ //未知类型
     total = content0
-    $done({ content: content0 })
+    hfgjCaptureDone({ content: content0 })
   } 
   if (Pcnt == 1 && flag !=1 && total!=undefined) {$notify("解析后最终返回内容" , "总数量： " +total.split("\n").length, total)}
   return total

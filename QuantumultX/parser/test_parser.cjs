@@ -19,14 +19,21 @@ function resource(content, type = "server", suffix = "") {
 function profile(nodes, aliases = "alias = /a.example/b.example") {
   return "[server_local]\n" + nodes + "\n[dns]\n" + aliases + "\n";
 }
-function run(source, input, build = 950) {
+function run(source, input, build = 950, rejectDoneAssignment = false) {
   const outputs = [], notifications = [], logs = [];
   const context = {
     $resource: {...input}, $environment: {version: "Quantumult X build " + build},
-    $done: output => outputs.push(JSON.parse(JSON.stringify(output))),
     $notify: (...args) => notifications.push(args), console: {log: (...args) => logs.push(args)}
   };
+  const nativeDone = output => { outputs.push(JSON.parse(JSON.stringify(output))); };
+  if (rejectDoneAssignment) Object.defineProperty(context, "$done", {
+    get: () => nativeDone,
+    set: () => { throw new TypeError("host completion API cannot be reassigned"); },
+    configurable: false
+  });
+  else Object.defineProperty(context, "$done", {value: nativeDone, writable: false, configurable: false});
   vm.runInNewContext(source, context, {timeout: 10000});
+  assert.equal(context.$done, nativeDone);
   return {outputs, notifications, logs, context};
 }
 function output(input) {
@@ -228,6 +235,17 @@ test("parser helper UI remains exposed", () => {
   assert.equal(typeof r.context.$parser.hashSchema,"function");
   assert(r.context.$parser.hashSchema());
 });
+for (const withAlias of [false, true]) {
+  test("host rejects completion callback reassignment: " + (withAlias ? "alias" : "plain"), () => {
+    const node = "shadowsocks=a.example:443, method=aes-128-gcm, password=test, tag=one";
+    const r = run(generated, resource(withAlias ? profile(node) : node), 950, true);
+    assert(r.outputs.length);assert(r.outputs.every(x => typeof x.content === "string" && !x.error));
+    if (withAlias) {
+      assert.equal(r.outputs.length, 1);
+      assert.match(Buffer.from(r.outputs[0].content,"base64").toString("utf8"), /^shadowsocks=b.example:/);
+    } else assert.deepEqual(r.outputs,run(original,resource(node),950,true).outputs);
+  });
+}
 // Opt-in private samples: never print assertion operands, notifications, or logs.
 if (process.env.HFGJ_PRIVATE_SAMPLES_ROOT) {
   const privateRoot=path.resolve(process.env.HFGJ_PRIVATE_SAMPLES_ROOT);

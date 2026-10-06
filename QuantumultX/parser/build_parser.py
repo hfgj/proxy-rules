@@ -72,15 +72,19 @@ def build() -> str:
                                      "      $notify(`⚠️该节点解析错误, 暂时已忽略处理`")
     # Keep the upstream snapshot untouched; disable its raw-data logging in the build.
     upstream = upstream.replace("console.log(", "HFGJAlias.quietLog(")
+    # Redirect generated upstream call sites without assigning the host API.
+    if "$done(" not in upstream:
+        raise RuntimeError("上游完成回调接入点变化，需重新审查上游")
+    upstream = upstream.replace("$done(", "hfgjCaptureDone(")
     adapter = (BASE / "hfgj-alias.js").read_text()
     prelude = """
 var hfgjAliasContext = HFGJAlias.prepare($resource);
 var hfgjNativeDone = $done;
 var hfgjPendingResults = [];
+function hfgjCaptureDone(payload) { hfgjPendingResults.push(payload); }
 if (hfgjAliasContext.error) {
   hfgjNativeDone({error: HFGJAlias.failure(hfgjAliasContext.error).message});
 } else {
-  $done = function (payload) { hfgjPendingResults.push(payload); };
   try {
 """
     suffix = """
@@ -100,7 +104,7 @@ if (hfgjAliasContext.error) {
   }
 }
 """
-    header = "// HFGJ alias adapter v1. Upstream commit: " + metadata["commit"] + "\n"
+    header = "// HFGJ alias adapter v1.1. Upstream commit: " + metadata["commit"] + "\n"
     return header + adapter + prelude + upstream + suffix
 
 
