@@ -1,5 +1,15 @@
-# 已确认的独立 Microsoft Copilot 入口
+# Microsoft Copilot 入口；保留文件名以兼容现有规则订阅
 # 这是域名分流建议；不保证所有嵌入式 Copilot 功能或账号地区检查均由这些域名覆盖。
+# 个人版入口：https://www.microsoft.com/en-us/microsoft-copilot/for-individuals/termsofuse
 DOMAIN-SUFFIX,copilot.microsoft.com
 DOMAIN-SUFFIX,copilot.com
 DOMAIN-SUFFIX,copilot.ai
+
+# 新版 Copilot 应用入口；不扩大到整个 cloud.microsoft
+# https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-copilot-requirements
+DOMAIN-SUFFIX,copilot.cloud.microsoft
+
+# Edge 侧栏个人账号 Copilot 页面 /edgesvc/shell；域名也承载其他 Edge 服务
+# 域名分流无法仅限定该路径，因此只精确匹配此主机，不扩大到 bing.com
+# https://learn.microsoft.com/en-us/troubleshoot/microsoft-edge/experience/copilot-chat-loading-issues
+DOMAIN,edgeservices.bing.com
