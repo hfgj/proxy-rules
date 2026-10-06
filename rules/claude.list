@@ -1,0 +1,19 @@
+# Claude / Anthropic：网页、API 与桌面端域名分流
+# Clash classical/text 格式；策略由配置中的 RULE-SET 指定。
+# 桌面端官方网络要求：https://code.claude.com/docs/en/desktop#network-access-requirements
+# 以下后缀覆盖官方列出的主域名及动态子域名。
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,claude.app
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN-SUFFIX,claudemcpcontent.com
+
+# 其他相关入口；参考现有 Anthropic 域名集合，不扩大到共享服务后缀。
+# https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.yaml
+DOMAIN-SUFFIX,clau.de
+DOMAIN-SUFFIX,claude.dev
+DOMAIN-SUFFIX,claudemcpclient.com
+
+# Anthropic 网站 CDN：只匹配此主机。
+DOMAIN,servd-anthropic-website.b-cdn.net
