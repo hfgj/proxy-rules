@@ -18,6 +18,10 @@ UPSTREAMS = {
     "gemini": f"{META_BASE}/google-gemini.yaml",
 }
 
+LOCAL_ADDITIONS = {
+    "anthropic": {"claude.app"},
+}
+
 EXPECTED = {
     "openai": {"chatgpt.com", "openai.com"},
     "anthropic": {"anthropic.com", "claude.ai"},
@@ -77,6 +81,7 @@ def main() -> None:
     groups: dict[str, set[str]] = {}
     for name, url in UPSTREAMS.items():
         domains = parse_meta_yaml(fetch(url))
+        domains.update(LOCAL_ADDITIONS.get(name, set()))
         missing = EXPECTED[name] - domains
         if missing:
             raise RuntimeError(
@@ -114,6 +119,9 @@ def main() -> None:
         "sources": {
             **UPSTREAMS,
             "openrouter": "rules/openrouter.list",
+        },
+        "local_additions": {
+            name: sorted(domains) for name, domains in LOCAL_ADDITIONS.items()
         },
         "groups": {name: len(domains) for name, domains in groups.items()},
         "total_unique_domains": len(set().union(*groups.values())),
