@@ -7,11 +7,16 @@
     "gemini": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.yaml",
     "openrouter": "rules/openrouter.list"
   },
+  "local_additions": {
+    "anthropic": [
+      "claude.app"
+    ]
+  },
   "groups": {
     "openai": 22,
-    "anthropic": 9,
+    "anthropic": 10,
     "gemini": 46,
     "openrouter": 1
   },
-  "total_unique_domains": 78
+  "total_unique_domains": 79
 }
