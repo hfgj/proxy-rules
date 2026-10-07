@@ -1,5 +1,5 @@
 /** 
-☑️ HFGJ 资源解析器 v1.3 | 上游 ©𝐒𝐡𝐚𝐰𝐧  ⟦2026-09-18 14:27⟧
+☑️ HFGJ 资源解析器 v1.4 | 上游 ©𝐒𝐡𝐚𝐰𝐧  ⟦2026-09-18 14:27⟧
 ----------------------------------------------------------
 🛠 发现 𝐁𝐔𝐆 请反馈: https://t.me/ShawnKOP_Parser_Bot
 ⛳️ 关注 🆃🅶 相关频道: https://t.me/QuanX_API
@@ -513,7 +513,7 @@ $parser.uiToHash = function (values) {
 
 
 //
-// HFGJ alias adapter v1.3. Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
+// HFGJ parser v1.4 (alias adapter and process-rule filtering). Upstream commit: 38a6fe02eb7cc67efd26a8f3c618bd031f1885b4
 /* HFGJ alias adapter. Pure parsing only: no network, DNS lookup, or storage. */
 var HFGJAlias = (function () {
   "use strict";
@@ -2619,6 +2619,7 @@ function Rule_Policy(content, ignored) { //增加、替换 policy
     // ⟦2026-09-16 11:55 +08⟧ 已知 Surge 附加标记按字段移除，不再依赖位置；保留主匹配条件和策略。
     // QX 不复现 Surge 的预匹配阶段或扩展匹配机制，未知参数不擅自删除。
     cnt = cnt.map(function (part) { return part.trim() });
+    if (/^process-name$/i.test(cnt[0])) { return ""; }
     if (/^(?:domain(?:-suffix|-keyword|-wildcard|-regex)?|host(?:-suffix|-keyword|-wildcard)?|ip-cidr6?|ip6-cidr|ip-asn|geoip|user-agent)$/i.test(cnt[0])) {
         cnt = cnt.slice(0, 2).concat(cnt.slice(2).filter(function (part) { return !/^(?:no-resolve|pre-matching|extended-matching)$/i.test(part) }));
         if (cnt[1]) { cnt[1] = cnt[1].replace(/^(["'])([\s\S]*)\1$/, "$2") }
@@ -5932,7 +5933,7 @@ function NOT(array) {
 }
 if (hfgjAliasContext.diagnosticEnabled) {
   try {
-    $notify("HFGJ v1.3 诊断", "", HFGJAlias.diagnostic(hfgjAliasContext, hfgjFinalPayload));
+    $notify("HFGJ v1.4 诊断", "", HFGJAlias.diagnostic(hfgjAliasContext, hfgjFinalPayload));
   } catch (hfgjDiagnosticError) { /* Diagnostics must not affect node delivery. */ }
 }
 $done(hfgjFinalPayload);
