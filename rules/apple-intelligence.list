@@ -1,4 +1,5 @@
 DOMAIN,guzzoni.apple.com
+DOMAIN,api-siri-prod.apple.com
 DOMAIN-SUFFIX,smoot.apple.com
 DOMAIN,apple-relay.apple.com
 DOMAIN,apple-relay.cloudflare.com
