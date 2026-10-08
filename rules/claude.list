@@ -17,3 +17,12 @@ DOMAIN-SUFFIX,claudemcpclient.com
 
 # Anthropic 网站 CDN：只匹配此主机。
 DOMAIN,servd-anthropic-website.b-cdn.net
+
+# Net.Coffee Claude 清单：新增精确关联域名（不代理共享 CDN / Auth0 / Ghost 后缀）。
+DOMAIN,anthropic.com.cdn.cloudflare.net
+DOMAIN,anthropic.auth0.com
+DOMAIN,anthropic-com.ghost.io
+
+# Claude 第三方监控与遥测：Sentry 为共享服务后缀，其他仅匹配精确主机。
+DOMAIN-SUFFIX,sentry.io
+DOMAIN,browser-intake-us5-datadoghq.com
