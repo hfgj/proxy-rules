@@ -1,0 +1,2 @@
+# Claude Desktop (Windows / macOS / Linux), helper processes, and Claude Code CLI.
+PROCESS-NAME-REGEX,(?i)^claude(\.exe|-desktop| helper( \([^)]+\))?)?$
