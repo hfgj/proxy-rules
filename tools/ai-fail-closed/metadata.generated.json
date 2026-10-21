@@ -13,10 +13,10 @@
     ]
   },
   "groups": {
-    "openai": 23,
-    "anthropic": 10,
+    "openai": 24,
+    "anthropic": 19,
     "gemini": 46,
     "openrouter": 1
   },
-  "total_unique_domains": 80
+  "total_unique_domains": 90
 }
