@@ -15,8 +15,8 @@
   "groups": {
     "openai": 24,
     "anthropic": 19,
-    "gemini": 46,
+    "gemini": 49,
     "openrouter": 1
   },
-  "total_unique_domains": 90
+  "total_unique_domains": 93
 }
