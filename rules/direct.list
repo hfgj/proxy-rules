@@ -20,6 +20,9 @@ DOMAIN-SUFFIX,debrid-link.fr
 DOMAIN-SUFFIX,debrid.link
 DOMAIN-SUFFIX,deblk.cloud
 
+# OpenCode
+DOMAIN-SUFFIX,opencode.ai
+
 # Tailscale
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,tailscale.io
