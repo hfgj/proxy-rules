@@ -1,0 +1,26 @@
+# Title: BM7 BlockHTTPDNS for MosDNS v5
+# DOMAIN/HOST -> full:
+# DOMAIN-SUFFIX/HOST-SUFFIX -> domain:
+
+domain:httpdns.baidu.com
+domain:httpdns.baidubce.com
+domain:httpdns.pro
+domain:httpsdns.baidu.com
+full:dns.jd.com
+full:dns.weibo.cn
+full:dns.weixin.qq.com
+full:dns.weixin.qq.com.cn
+full:httpdns-api.aliyuncs.com
+full:httpdns-sc.aliyuncs.com
+full:httpdns.alicdn.com
+full:httpdns.bilivideo.com
+full:httpdns.c.cdnhwc2.com
+full:httpdns.calorietech.com
+full:httpdns.meituan.com
+full:httpdns.music.163.com
+full:httpdns.n.netease.com
+full:httpdns.push.oppomobile.com
+full:httpdns.volcengineapi.com
+full:httpdns.yunxindns.com
+full:lofter.httpdns.c.163.com
+full:music.httpdns.c.163.com

@@ -1,0 +1,22 @@
+{
+  "target": "adguardhome-fallback-dns",
+  "mihomo_dns": "127.0.0.1:1053",
+  "sources": {
+    "openai": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.yaml",
+    "anthropic": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.yaml",
+    "gemini": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.yaml",
+    "openrouter": "rules/openrouter.list"
+  },
+  "local_additions": {
+    "anthropic": [
+      "claude.app"
+    ]
+  },
+  "groups": {
+    "openai": 24,
+    "anthropic": 21,
+    "gemini": 49,
+    "openrouter": 1
+  },
+  "total_unique_domains": 95
+}

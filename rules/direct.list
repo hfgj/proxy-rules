@@ -1,0 +1,35 @@
+# Apple Music
+DOMAIN,aod.itunes.apple.com
+DOMAIN,music.apple.cn
+DOMAIN,music.apple.com
+
+#
+DOMAIN-SUFFIX,ipsw.me
+DOMAIN-SUFFIX,libreoffice.org
+DOMAIN-SUFFIX,codecguide.com
+DOMAIN-SUFFIX,calibre-ebook.com
+DOMAIN-SUFFIX,flaticon.com
+DOMAIN-SUFFIX,fastly.jsdelivr.net
+DOMAIN-SUFFIX,vsean.net
+DOMAIN-SUFFIX,api.mac-stats.com
+DOMAIN-SUFFIX,testingcf.jsdelivr.net
+
+# Debrid-Link
+DOMAIN-SUFFIX,debrid-link.com
+DOMAIN-SUFFIX,debrid-link.fr
+DOMAIN-SUFFIX,debrid.link
+DOMAIN-SUFFIX,deblk.cloud
+
+# OpenCode
+DOMAIN-SUFFIX,opencode.ai
+
+# Tailscale
+DOMAIN-SUFFIX,tailscale.com
+DOMAIN-SUFFIX,tailscale.io
+DOMAIN-SUFFIX,ts.net
+
+# Process
+PROCESS-NAME,wemeetapp.exe
+PROCESS-NAME,SunloginClient.exe
+PROCESS-NAME,sunlogin_guard.exe
+PROCESS-NAME,DingTalk.exe

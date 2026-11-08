@@ -1,0 +1,6 @@
+# ChatGPT Desktop (Windows / macOS / Linux) and common helper processes
+# Match executable names, not global Google / Cloudflare / other shared domains.
+PROCESS-NAME-REGEX,(?i)^chatgpt(\.exe| classic| helper( \([^)]+\))?)?$
+
+# Codex CLI / integrated Codex helper processes; all traffic uses the OpenAI policy.
+PROCESS-NAME-REGEX,(?i)^codex(\.exe| \([^)]+\)| helper( \([^)]+\))?)?$

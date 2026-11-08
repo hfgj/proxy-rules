@@ -1,0 +1,16 @@
+# 通用IP检测
+DOMAIN-SUFFIX,ipinfo.io
+DOMAIN-SUFFIX,whatismyipaddress.com
+DOMAIN-SUFFIX,api.ipify.org
+
+# bewild网站检测
+DOMAIN-SUFFIX,bewild.ai
+DOMAIN-SUFFIX,wildai.net
+
+# 其他网站检测
+DOMAIN-SUFFIX,aifuns.xyz
+DOMAIN-SUFFIX,checkcc.org
+DOMAIN-SUFFIX,amichinaflagged.com
+DOMAIN-SUFFIX,ermao.net
+DOMAIN-SUFFIX,ping0.cc
+DOMAIN-SUFFIX,browserleaks.com

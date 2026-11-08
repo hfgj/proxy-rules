@@ -1,0 +1,7 @@
+# WeChat international API and media routing.
+# Keep the scope validated by client testing; the client policy selects the exit.
+# qpic.cn is shared with other Tencent image services.
+# No fixed IP ranges, payment domains, or Tencent-wide ASN rules.
+DOMAIN-SUFFIX,wechat.com
+DOMAIN-SUFFIX,wechatos.net
+DOMAIN-SUFFIX,qpic.cn
